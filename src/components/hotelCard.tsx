@@ -71,6 +71,12 @@ const HotelCard: React.FC<HotelCardProps> = ({ hotel, onDelete,isActive, onCardC
             Delete Hotel
           </button>
         )}
+          <button 
+            onClick={handleDelete}
+            className="bg-blue-500 text-white py-2 px-4 mt-2 rounded hover:bg-blue-600"
+          >
+            Edit
+          </button>
     </div>
     </div>
   );
