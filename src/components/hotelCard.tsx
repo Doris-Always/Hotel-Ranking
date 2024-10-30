@@ -1,5 +1,6 @@
 import React from 'react';
 import Image from 'next/image';
+import StarRating from './starRating';
 
 export interface Hotel {
   name: string;
@@ -36,6 +37,10 @@ const HotelCard: React.FC<HotelCardProps> = ({ hotel, onDelete }) => {
       <p className="text-gray-700">{hotel.description}</p>
       <p className="text-gray-500">Category: {hotel.category}</p>
       <p className="text-gray-500">Address: {hotel.address}, {hotel.country}</p>
+      <span>Rate: 
+      <StarRating/>
+      
+      </span>
       <div className='flex justify-between'>
       <button className="bg-blue-500 text-white py-2 px-4 mt-2 rounded hover:bg-blue-600">
         Rate Hotel
