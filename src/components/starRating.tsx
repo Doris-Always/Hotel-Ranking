@@ -1,4 +1,4 @@
-// components/StarRating.tsx
+
 import React, { useState } from 'react';
 import Star from './star';
 
@@ -8,7 +8,7 @@ interface StarRatingProps {
   color?: string;
   size?: number;
   rating: number;
-  onRate?: (rating: number) => void; // Add onRate prop
+  onRate?: (rating: number) => void; 
 }
 
 const StarRating: React.FC<StarRatingProps> = ({ maxRating = 5, color = '#fcc419', size = 24 , onRate,rating=0 }) => {
