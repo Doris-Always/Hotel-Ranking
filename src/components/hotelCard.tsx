@@ -8,29 +8,36 @@ export interface Hotel {
   address: string;
   category: string;
   description: string;
-  image: string; // Add image field
+  image: string;
+   rating?:number;
 }
 
 interface HotelCardProps {
   hotel: Hotel;
   onDelete: (name: string) => void;
   isActive: boolean; 
-  onCardClick: (name: string) => void; 
+  onCardClick: (name: string) => void;
+  rating?: number; 
 }
 
 const HotelCard: React.FC<HotelCardProps> = ({ hotel, onDelete,isActive, onCardClick}) => {
-  const [rating, setRating] = useState<number | null>(null);
+  const [rating, setRating] = useState(hotel.rating || 0);
   const handleDelete = () => {
     onDelete(hotel.name);
   };
 
+ 
   const handleRatingChange = (newRating: number) => {
-    setRating(newRating); // Set the rating when it changes
+    setRating(newRating);
+ 
+    const hotels = JSON.parse(localStorage.getItem('hotels') || '[]');
+    const updatedHotels = hotels.map((h: Hotel) => 
+      h.name === hotel.name ? { ...h, rating: newRating } : h
+    );
+    localStorage.setItem('hotels', JSON.stringify(updatedHotels));
   };
 
-  // const handleCardClick = () => {
-  //   setIsClicked((prev) => !prev); 
-  // };
+
   return (
     <div    className={`bg-white rounded-lg shadow-md p-4 transition-transform duration-300 ${isActive ? 'scale-105' : 'scale-100'}`}   onClick={() => onCardClick(hotel.name)}>
       
@@ -50,14 +57,12 @@ const HotelCard: React.FC<HotelCardProps> = ({ hotel, onDelete,isActive, onCardC
       </div>
       <h2 className="font-bold text-xl mb-2">{hotel.name}</h2>
       <p className="text-gray-700">{hotel.description}</p>
-      <p className="text-gray-500">Category: {hotel.category}</p>
+      <p className="text-gray-500 hidden">Category: {hotel.category}</p>
       <p className="text-gray-500">Address: {hotel.address}, {hotel.country}</p>
      
-      <div className='flex my-4'><p>Rate: </p> <StarRating onRate={handleRatingChange}/></div>
+      <div className='flex my-4'><p>Rate: </p> <StarRating rating={rating} onRate={handleRatingChange}/></div>
       <div className='flex justify-between'>
-      {/* <button className="bg-blue-500 text-white py-2 px-4 mt-2 rounded hover:bg-blue-600">
-        Rate Hotel
-      </button> */}
+     
       {isActive  && (
           <button 
             onClick={handleDelete}

@@ -7,22 +7,28 @@ interface StarRatingProps {
   maxRating?: number;
   color?: string;
   size?: number;
+  rating: number;
   onRate?: (rating: number) => void; // Add onRate prop
 }
 
-const StarRating: React.FC<StarRatingProps> = ({ maxRating = 5, color = '#fcc419', size = 24 , onRate }) => {
-  const [rating, setRating] = useState(0);
+const StarRating: React.FC<StarRatingProps> = ({ maxRating = 5, color = '#fcc419', size = 24 , onRate,rating=0 }) => {
+  // const [rating, setRating] = useState(0);
   const [tempRating, setTempRating] = useState(0);
 
   // const handleRating = (rating: number) => {
   //   setRating(rating);
   // };
   const handleRating = (rating: number) => {
-    setRating(rating);
     if (onRate) {
-      onRate(rating); // Call the onRate callback when the rating is set
+      onRate(rating); // Call onRate prop if it's provided
     }
   };
+  // const handleRating = (rating: number) => {
+  //   setRating(rating);
+  //   if (onRate) {
+  //     onRate(rating); // Call the onRate callback when the rating is set
+  //   }
+  // };
 
   return (
     <div className="flex items-center gap-4">

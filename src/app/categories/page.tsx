@@ -5,7 +5,7 @@ import Hero from '@/components/heroComponent/hero'
 import HeroContents from '@/components/heroComponent/heroContents'
 import Modal from '@/components/modal'
 import React, { useEffect, useState } from 'react'
-import { FaStar } from 'react-icons/fa'
+import { FaStar} from 'react-icons/fa';
 
 const Categories = () => {
     const [categories, setCategories] = useState<string[]>(['1 star', '2 star', '3 star']);
@@ -52,6 +52,12 @@ const Categories = () => {
         setShowModal(false);
       };
 
+      const handleDeleteCategory = (categoryToDelete: string) => {
+        const updatedCategories = categories.filter(category => category !== categoryToDelete);
+        setCategories(updatedCategories);
+        localStorage.setItem("categories", JSON.stringify(updatedCategories));
+    };
+
     return (
         <>
         <Hero>
@@ -89,6 +95,13 @@ const Categories = () => {
                                 <FaStar key={i} className="text-yellow-500" />
                             ))}
                         </div>
+
+                        <button
+                                onClick={() => handleDeleteCategory(category)}
+                                className="mt-4 bg-red-500 text-white py-1 px-4 rounded hover:bg-red-600 transition duration-300 inline-block"
+                            >
+                                Delete
+                            </button>
                     </Card>
                 );
             })}
