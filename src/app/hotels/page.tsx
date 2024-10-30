@@ -1,11 +1,12 @@
+// Hotels.tsx
 "use client";
 
-import Card from '@/components/cardComponents/card';
 import React, { useEffect, useState } from 'react';
 import { useRouter } from "next/navigation";
 import Button from '@/components/button';
 import Search from '@/components/search';
 import Filter from '@/components/filter';
+import HotelCard from '@/components/hotelCard';
 
 export interface Hotel {
   id: number;
@@ -47,12 +48,6 @@ const Hotels = () => {
     retrieveHotels();
   }, []);
 
-  // const handleChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-  //   const { value } = e.target;
-  //   setSelectedCategory(value);
-  //   setFilter(true);
-  // };
-
   const search = () => {
     setFilter(false);
     const results: Hotel[] = hotels.filter(item => 
@@ -86,24 +81,6 @@ const Hotels = () => {
     retrieveHotels(); 
   };
 
-  const renderHotelCard = (hotel: Hotel) => (
-    <Card key={hotel.name} width="w-full" height="h-64">
-      <h3 className="text-lg font-bold">{hotel.name}</h3>
-      <p className="text-gray-700">{hotel.country}, {hotel.address}</p>
-      <p className="text-gray-500">{hotel.description}</p>
-      <p className="text-yellow-500">Rating: {hotel.rating} ⭐</p>
-      <div>
-        <button className="bg-blue-500 text-white py-2 px-4 mt-2 rounded hover:bg-blue-600">
-          Rate Hotel
-        </button>
-        <button onClick={() => deleteHotel(hotel.name)}
-                className="bg-blue-500 text-white py-2 px-4 mt-2 rounded hover:bg-blue-600">
-          Delete Hotel
-        </button>
-      </div>
-    </Card>
-  );
-
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 p-4 mt-16">
       <Button width="w-28" text="Add Hotel" onClick={handleClick} />
@@ -114,16 +91,15 @@ const Hotels = () => {
         setSelectedCategory={setSelectedCategory} 
         onFilter={handleFilter} 
         onCancelFilter={cancelFilter} 
-       
       />
 
       {hotels.map(hotel => {
         if (isFilter && selectedCategory) {
           return selectedCategory.toLowerCase() === hotel.category.toLowerCase()
-            ? renderHotelCard(hotel)
+            ? <HotelCard key={hotel.name} hotel={hotel} onDelete={deleteHotel} /> 
             : null;
         }
-        return renderHotelCard(hotel);
+        return <HotelCard key={hotel.name} hotel={hotel} onDelete={deleteHotel} />; 
       })}
     </div>
   );
