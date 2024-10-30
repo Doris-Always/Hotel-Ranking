@@ -4,6 +4,7 @@ import React, { useEffect, useState } from 'react';
 import Image from "next/image";
 import axios from "axios";
 import {useRouter} from "next/navigation";
+import Button from '@/components/button';
 
 export interface Hotel {
   id: number;
@@ -62,12 +63,17 @@ const Hotels= () => {
     setHotels(availableHotels);
     localStorage.setItem("hotels", JSON.stringify(availableHotels))
   }
+
+  const handleClick = () =>{
+    router.push('/createHotel')
+  }
   return (
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 p-4 mt-16">
-        <button onClick={() => router.push('/createHotel')}
+        {/* <button onClick={() => router.push('/createHotel')}
                 className="bg-blue-500 text-white py-2 px-4 mt-2 rounded hover:bg-blue-600">
           Add Hotel
-        </button>
+        </button> */}
+         <Button width="w-28" text="Add Hotel" onClick={handleClick} />
 
         <div>
         <button className="bg-blue-500 text-white py-2 px-4 mt-2 rounded hover:bg-blue-600">

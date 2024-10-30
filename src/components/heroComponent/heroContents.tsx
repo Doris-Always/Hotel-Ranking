@@ -1,7 +1,7 @@
 import React from 'react'
 import Image from "next/image";
 
-const HeroContents = () => {
+const HeroContents = ({paragraph = "Rate Hotels and View Hotels According to Rating "}) => {
   return (
     <div className="relative h-96 w-full">
    
@@ -18,7 +18,8 @@ const HeroContents = () => {
           HOTEL RANKING
         </h1>
         <p className="text-lg md:text-2xl text-white mb-6">
-          Rate Hotels and View Hotels According to Rating
+          {paragraph}
+          {/* Rate Hotels and View Hotels According to Rating */}
         </p>
         <button className="bg-blue-500 text-white py-3 px-6 rounded-md hover:bg-blue-600 transition duration-300">
           Rate Now
