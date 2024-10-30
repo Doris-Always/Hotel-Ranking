@@ -22,7 +22,7 @@ const Card: React.FC<CardProps> = ({children,
  }) => {
   return (
     <div
-      className={`flex flex-col items-center justify-center p-4 shadow-lg rounded-lg ${backgroundColor} ${width} ${height} ${className}`}
+      className={`flex flex-col p-4 shadow-lg rounded-lg ${backgroundColor} ${width} ${height} ${className}`}
     >
       {imageSrc && (
         <Image

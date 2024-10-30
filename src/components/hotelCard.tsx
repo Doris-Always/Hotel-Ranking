@@ -19,7 +19,7 @@ interface HotelCardProps {
 }
 
 const HotelCard: React.FC<HotelCardProps> = ({ hotel, onDelete }) => (
-  <Card key={hotel.name} width="w-full" height="h-64">
+  <Card key={hotel.name} width="" height="h-64" >
     <h3 className="text-lg font-bold">{hotel.name}</h3>
     <p className="text-gray-700">{hotel.country}, {hotel.address}</p>
     <p className="text-gray-500">{hotel.description}</p>
