@@ -19,9 +19,13 @@ interface HotelCardProps {
 }
 
 const HotelCard: React.FC<HotelCardProps> = ({ hotel, onDelete,isActive, onCardClick}) => {
-  // const [isClicked, setIsClicked] = useState(false);
+  const [rating, setRating] = useState<number | null>(null);
   const handleDelete = () => {
     onDelete(hotel.name);
+  };
+
+  const handleRatingChange = (newRating: number) => {
+    setRating(newRating); // Set the rating when it changes
   };
 
   // const handleCardClick = () => {
@@ -38,13 +42,18 @@ const HotelCard: React.FC<HotelCardProps> = ({ hotel, onDelete,isActive, onCardC
           style={{ objectFit: 'cover' }}
           className="rounded-lg"
         />
+         {rating && (
+          <button className="absolute top-2 right-2 bg-white text-yellow-500 text-sm font-bold py-1 px-2 rounded">
+            {rating} Star
+          </button>
+        )}
       </div>
       <h2 className="font-bold text-xl mb-2">{hotel.name}</h2>
       <p className="text-gray-700">{hotel.description}</p>
       <p className="text-gray-500">Category: {hotel.category}</p>
       <p className="text-gray-500">Address: {hotel.address}, {hotel.country}</p>
      
-      <div className='flex my-4'><p>Rate: </p> <StarRating/></div>
+      <div className='flex my-4'><p>Rate: </p> <StarRating onRate={handleRatingChange}/></div>
       <div className='flex justify-between'>
       {/* <button className="bg-blue-500 text-white py-2 px-4 mt-2 rounded hover:bg-blue-600">
         Rate Hotel
