@@ -10,10 +10,10 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 const imagesArray = [
-  '/images/hotel1.jpg', // Add the path to your hotel images
-  '/images/hotel2.jpg',
-  '/images/hotel3.jpg',
-  '/images/hotel4.jpg',
+  '/executive-room2.jpg', // Add the path to your hotel images
+  '/single-executive.jpg',
+  '/executive-room2.jpg',
+  '/single-executive.jpg',
   // ... more images
 ];
 
@@ -108,12 +108,12 @@ const CreateHotel = () => {
     <div className="flex justify-center items-center min-h-screen mt-10">
       <ToastContainer />
       <Card width="w-96" height="h-auto">
-        <div className="w-full h-64 relative">
+        <div className="w-full h-32 relative">
           <Image
             src="/single-executive.jpg"
             alt="Hotel"
             fill
-            style={{ objectFit: 'cover' }}
+  style={{ objectFit: 'cover' }}
             className="mb-2 rounded-t-lg object-cover"
           />
         </div>

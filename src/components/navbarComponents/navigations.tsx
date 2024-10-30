@@ -19,11 +19,7 @@ const Navigations: React.FC = () => {
           Categories
         </Link>
       </li>
-      <li>
-        <Link href="/rate" className="text-xl text-white hover:text-blue-600 cursor-pointer">
-          Rate
-        </Link>
-      </li>
+   
     </ul>
   </div>
   );

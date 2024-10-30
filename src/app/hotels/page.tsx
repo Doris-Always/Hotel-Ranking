@@ -7,7 +7,7 @@ import Button from '@/components/button';
 import Search from '@/components/search';
 import Filter from '@/components/filter';
 import HotelCard from '@/components/hotelCard';
-// import Navbar from '@/components/navbarComponents/navbar';
+
 
 export interface Hotel {
   id: number;
@@ -83,9 +83,19 @@ const Hotels = () => {
     retrieveHotels(); 
   };
 
+  const [activeHotel, setActiveHotel] = useState<string | null>(null);
+
+  // const handleDelete = (name: string) => {
+  //   console.log("Deleted:", name);
+  //   // Add your deletion logic here
+  // };
+
+  const handleCardClick = (name: string) => {
+    setActiveHotel((prev) => (prev === name ? null : name)); // Set active hotel or toggle off
+  };
   return (
     <>
-    <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 p-4 mt-16'>
+    <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mt-24 md:ml-16 ml-4'>
      <Button width="w-28" text="Add Hotel" onClick={handleClick} />
       <Search query={query} setQuery={setQuery} onSearch={search} onCancel={cancelSearch} />
       <Filter 
@@ -97,16 +107,18 @@ const Hotels = () => {
       />
     </div>
 
-<div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 p-4 mt-16">
+<div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 p-4 mt-4">
     
 
       {hotels.map(hotel => {
         if (isFilter && selectedCategory) {
           return selectedCategory.toLowerCase() === hotel.category.toLowerCase()
-            ? <HotelCard key={hotel.name} hotel={hotel} onDelete={deleteHotel} /> 
+            ? <HotelCard key={hotel.name} hotel={hotel} onDelete={deleteHotel} isActive={activeHotel === hotel.name}
+            onCardClick={handleCardClick}/> 
             : null;
         }
-        return <HotelCard key={hotel.name} hotel={hotel} onDelete={deleteHotel} />; 
+        return <HotelCard key={hotel.name} hotel={hotel} onDelete={deleteHotel} isActive={activeHotel === hotel.name}
+        onCardClick={handleCardClick}/>; 
       })}
     </div>
     </>

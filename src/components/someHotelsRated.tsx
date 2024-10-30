@@ -46,7 +46,8 @@ const SomeHotelsRated = () => {
 
         <div className="flex flex-wrap justify-between gap-4 p-4 mt-8 mb-12">
           {displayData.map((hotel, index) => (
-            <Card key={index} width="w-64" height="h-64">
+            <Card key={index} width="w-64" height="h-64" >
+                
               {hotel.name ? (
                 <>
                   <h2 className="font-bold text-xl mb-2">{hotel.name}</h2>

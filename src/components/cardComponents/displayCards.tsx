@@ -23,7 +23,7 @@ const cardData = [
   {
     title: "Rate hotels",
     description: "Your rating matters to us",
-      link: "/rate"
+      link: "/hotels"
   },
 ];
 

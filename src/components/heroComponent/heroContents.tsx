@@ -1,15 +1,22 @@
+"use client"
 import React from 'react'
 import Image from "next/image";
+import Button from '../button';
+import { useRouter } from "next/navigation";
 
 const HeroContents = ({paragraph = "Rate Hotels and View Hotels According to Rating "}) => {
+  const router = useRouter();
+  const handleClick = () =>{
+    router.push('/hotels');
+  }
   return (
     <div className="relative h-96 w-full">
    
       <Image
         src="/executive-room2.jpg" 
         alt="Hotel View"
-        layout="fill"
-        objectFit="cover"
+        fill
+        style={{ objectFit: 'cover' }}
         priority 
         className="z-0"
       />
@@ -21,9 +28,10 @@ const HeroContents = ({paragraph = "Rate Hotels and View Hotels According to Rat
           {paragraph}
           {/* Rate Hotels and View Hotels According to Rating */}
         </p>
-        <button className="bg-blue-500 text-white py-3 px-6 rounded-md hover:bg-blue-600 transition duration-300">
+        {/* <button className="bg-blue-500 text-white py-3 px-6 rounded-md hover:bg-blue-600 transition duration-300">
           Rate Now
-        </button>
+        </button> */}
+          <Button text="Rate Now" onClick={handleClick} />
       </div>
     </div>
   )

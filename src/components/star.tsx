@@ -17,7 +17,7 @@ const Star: React.FC<StarProps> = ({ onRate, full, onHoverIn, onHoverOut }) => {
       className="cursor-pointer"
     >
       {full ? (
-        // Yellow filled star (rated)
+    
         <svg
           xmlns="http://www.w3.org/2000/svg"
           viewBox="0 0 20 20"

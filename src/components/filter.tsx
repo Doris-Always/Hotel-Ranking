@@ -23,7 +23,7 @@ const Filter: React.FC<FilterProps> = ({ categories, selectedCategory, setSelect
         value={selectedCategory}
         onChange={handleSelectChange}
         required
-        className="ml-2 p-2 border-2 w-64 h-12 text-gray-500"
+        className="md:ml-2 p-2 border-2 w-64 h-12 text-gray-500"
         onClick={onFilter}
       >
         <option value="">Select a category</option>
@@ -33,7 +33,7 @@ const Filter: React.FC<FilterProps> = ({ categories, selectedCategory, setSelect
           </option>
         ))}
       </select>
-      <button onClick={onCancelFilter} className="bg-red-500 text-white  px-4 h-12 hover:bg-red-600">
+      <button onClick={onCancelFilter} className="bg-gray-300 text-white  px-4 h-12 hover:bg-gray-400 ">
         X
       </button>
     </div>
