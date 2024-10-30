@@ -7,6 +7,7 @@ import Button from '@/components/button';
 import Search from '@/components/search';
 import Filter from '@/components/filter';
 import HotelCard from '@/components/hotelCard';
+// import Navbar from '@/components/navbarComponents/navbar';
 
 export interface Hotel {
   id: number;
@@ -15,7 +16,8 @@ export interface Hotel {
   address: string;
   description: string;
   rating: number;
-  imageSrc: string;
+  // imageSrc: string;
+  image:string;
   category: string;
 }
 
@@ -82,8 +84,9 @@ const Hotels = () => {
   };
 
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 p-4 mt-16">
-      <Button width="w-28" text="Add Hotel" onClick={handleClick} />
+    <>
+    <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 p-4 mt-16'>
+     <Button width="w-28" text="Add Hotel" onClick={handleClick} />
       <Search query={query} setQuery={setQuery} onSearch={search} onCancel={cancelSearch} />
       <Filter 
         categories={categories} 
@@ -92,6 +95,10 @@ const Hotels = () => {
         onFilter={handleFilter} 
         onCancelFilter={cancelFilter} 
       />
+    </div>
+
+<div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 p-4 mt-16">
+    
 
       {hotels.map(hotel => {
         if (isFilter && selectedCategory) {
@@ -102,6 +109,8 @@ const Hotels = () => {
         return <HotelCard key={hotel.name} hotel={hotel} onDelete={deleteHotel} />; 
       })}
     </div>
+    </>
+    
   );
 };
 

@@ -5,22 +5,31 @@ import React, { useState, useEffect } from "react";
 import Image from "next/image";
 import axios from 'axios';
 import Modal from "@/components/modal";
-import {useRouter} from "next/navigation";
+import { useRouter } from "next/navigation";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
+const imagesArray = [
+  '/images/hotel1.jpg', // Add the path to your hotel images
+  '/images/hotel2.jpg',
+  '/images/hotel3.jpg',
+  '/images/hotel4.jpg',
+  // ... more images
+];
+
 const CreateHotel = () => {
   const router = useRouter();
-  const [countries, setCountries] = useState<string[]>([]); 
-  const [categories, setCategories] = useState<string[]>(['1 star', '2 star', '3 star']);
+  const [countries, setCountries] = useState<string[]>([]);
+  const [categories, setCategories] = useState<string[]>(['1 Star', '2 Star', '3 Star']);
   const [error, setError] = useState('');
   const [showModal, setShowModal] = useState(false);
   const [formData, setFormData] = useState({
     name: "",
     country: "",
     address: "",
-    category: "1 Star", 
-    description: " ",
+    category: "1 Star",
+    description: "",
+    image: "", 
   });
 
   useEffect(() => {
@@ -33,80 +42,65 @@ const CreateHotel = () => {
         console.error("Error fetching countries:", error);
       }
 
-      const categoriesString= localStorage.getItem("categories")
+      const categoriesString = localStorage.getItem("categories");
       if (categoriesString) {
-        const currentCategories = JSON.parse(categoriesString)
-        setCategories(currentCategories);
+        setCategories(JSON.parse(categoriesString));
       }
     };
-    
+
     fetchCountries();
   }, []);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
-    setFormData({
-      ...formData,
-      [name]: value,
-    });
-    setError(''); 
+    setFormData(prev => ({ ...prev, [name]: value }));
+    setError('');
   };
-
-
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    
+
     if (!formData.name) {
-      toast('Please fill in both the hotel name ');
+      toast('Please fill in the hotel name');
       return;
     }
-    if(!formData.country){
-      toast('Please fill in both the country fields');
+    if (!formData.country) {
+      toast('Please fill in the country field');
       return;
     }
-      const retrievedArrayString= localStorage.getItem("hotels")
-    if (retrievedArrayString){
-        const hotelFound = JSON.parse(retrievedArrayString)
-      for (let i = 0; i < hotelFound.length; i++) {
-        if (hotelFound[i].name.toLowerCase() === formData.name.toLowerCase()) {
-          console.log("name already exist"+hotelFound[i]);
-          toast('Hotel name has been taken. Please pick a new name ');
-          return;
-        }
-      }
-        hotelFound.unshift(formData)
-        localStorage.setItem("hotels", JSON.stringify(hotelFound))
-    }else {
-      const hotelFound = [];
-      hotelFound.unshift(formData)
-      localStorage.setItem("hotels", JSON.stringify(hotelFound))
-    }
-    console.log("Form submitted:", formData);
-      router.push('/hotels');
 
+    const retrievedArrayString = localStorage.getItem("hotels");
+    const hotelsFound = retrievedArrayString ? JSON.parse(retrievedArrayString) : [];
+
+    const hotelExists = hotelsFound.some(hotel => hotel.name.toLowerCase() === formData.name.toLowerCase());
+    if (hotelExists) {
+      toast('Hotel name has been taken. Please pick a new name');
+      return;
+    }
+
+    // Select a random image from the images array
+    const randomImage = imagesArray[Math.floor(Math.random() * imagesArray.length)];
+    
+    // Add the random image to the formData
+    const newHotel = { ...formData, image: randomImage };
+    hotelsFound.unshift(newHotel);
+    localStorage.setItem("hotels", JSON.stringify(hotelsFound));
+    console.log("Form submitted:", newHotel);
+    router.push('/hotels');
   };
-  const toggleModal = () => {
-    setShowModal((prev) => !prev);
-  };
+
+  const toggleModal = () => setShowModal(prev => !prev);
+
   const handleAddCategory = (newCategory: string) => {
+    const categoriesString = localStorage.getItem("categories");
+    const currentCategories = categoriesString ? JSON.parse(categoriesString) : ['1 Star', '2 Star', '3 Star'];
 
-    const categoriesString= localStorage.getItem("categories")
-    if (categoriesString){
-      let currentCategories = JSON.parse(categoriesString)
-      if (!currentCategories.includes(newCategory)) {
-        currentCategories.unshift(newCategory)
-      }else if (currentCategories.length === 0){
-        currentCategories = ['1 star', '2 star', '3 star']
-      }
-      localStorage.setItem("categories", JSON.stringify(currentCategories))
-    }else {
-      const currentCategories = ['1 Star', '2 Star', '3 Star', newCategory]
-      localStorage.setItem("categories", JSON.stringify(currentCategories))
+    if (!currentCategories.includes(newCategory)) {
+      currentCategories.unshift(newCategory);
+      localStorage.setItem("categories", JSON.stringify(currentCategories));
+      setCategories(currentCategories);
     }
-    if (newCategory && !categories.includes(newCategory)) {
-      setCategories([...categories, newCategory]);
-    }
+
     setShowModal(false);
   };
 
@@ -114,22 +108,20 @@ const CreateHotel = () => {
     <div className="flex justify-center items-center min-h-screen mt-10">
       <ToastContainer />
       <Card width="w-96" height="h-auto">
-        <div className="w-full h-8 relative w-full h-64">
+        <div className="w-full h-64 relative">
           <Image
             src="/single-executive.jpg"
             alt="Hotel"
             fill
             style={{ objectFit: 'cover' }}
-            className={`mb-2 rounded-t-lg object-cover`}
+            className="mb-2 rounded-t-lg object-cover"
           />
         </div>
         <h2 className="text-2xl font-bold mb-4 mt-4">Create Hotel</h2>
-        
+
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
-            <label className="block mb-1" htmlFor="name">
-              Hotel Name:
-            </label>
+            <label className="block mb-1" htmlFor="name">Hotel Name:</label>
             <input
               type="text"
               name="name"
@@ -139,13 +131,11 @@ const CreateHotel = () => {
               required
               className="w-full p-2 border border-gray-300 rounded"
             />
-              {error && <p className="text-red-500">{error}</p>}
+            {error && <p className="text-red-500">{error}</p>}
           </div>
 
           <div>
-            <label className="block mb-1" htmlFor="country">
-              Country:
-            </label>
+            <label className="block mb-1" htmlFor="country">Country:</label>
             <select
               name="country"
               id="country"
@@ -156,18 +146,14 @@ const CreateHotel = () => {
             >
               <option value="">Select a country</option>
               {countries.map((country, index) => (
-                <option key={index} value={country}>
-                  {country}
-                </option>
+                <option key={index} value={country}>{country}</option>
               ))}
             </select>
             {error && <p className="text-red-500">{error}</p>}
           </div>
 
           <div>
-            <label className="block mb-1" htmlFor="address">
-              Address:
-            </label>
+            <label className="block mb-1" htmlFor="address">Address:</label>
             <input
               type="text"
               name="address"
@@ -179,11 +165,9 @@ const CreateHotel = () => {
             />
           </div>
 
-          <div className="flex justify-between items-center ">
+          <div className="flex justify-between items-center">
             <div>
-              <label className="block mb-1" htmlFor="category">
-                Category:
-              </label>
+              <label className="block mb-1" htmlFor="category">Category:</label>
               <select
                 name="category"
                 id="category"
@@ -191,46 +175,44 @@ const CreateHotel = () => {
                 onChange={handleChange}
                 className="w-full p-2 border border-gray-300 rounded"
               >
-                   {categories.map((category) => (
-              <option key={category} value={category}>
-                {category}
-              </option>
-            ))}
+                {categories.map((category) => (
+                  <option key={category} value={category}>{category}</option>
+                ))}
               </select>
             </div>
 
-            <button className="bg-blue-500 mt-5 text-white py-2 px-4 rounded hover:bg-blue-600 transition duration-300"
-            onClick={toggleModal}
+            <button
+              type="button"
+              className="bg-blue-500 mt-5 text-white py-2 px-4 rounded hover:bg-blue-600 transition duration-300"
+              onClick={toggleModal}
             >
-         
               Add Category
             </button>
           </div>
+
           {showModal && (
-        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
-          <div className="bg-white p-6 rounded-lg shadow-lg w-96 h-96">
-            <Modal onAddCategory={handleAddCategory}/>
-            <button
-              onClick={toggleModal}
-              className="mt-4 bg-gray-300 text-gray-700 py-1 px-4 rounded hover:bg-gray-400 transition duration-300"
-            >
-              Close
-            </button>
-          </div>
-        </div>
-      )}
+            <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
+              <div className="bg-white p-6 rounded-lg shadow-lg w-96 h-96">
+                <Modal onAddCategory={handleAddCategory} />
+                <button
+                  onClick={toggleModal}
+                  className="mt-4 bg-gray-300 text-gray-700 py-1 px-4 rounded hover:bg-gray-400 transition duration-300"
+                >
+                  Close
+                </button>
+              </div>
+            </div>
+          )}
 
           <div>
-            <label className="block mb-1 " htmlFor="description">
-              Description:
-            </label>
+            <label className="block mb-1" htmlFor="description">Description:</label>
             <textarea
               name="description"
               id="description"
-              value={formData.description} 
+              value={formData.description}
               onChange={handleChange}
               required
-              rows={3} 
+              rows={3}
               className="w-full p-2 border border-gray-300 rounded"
             />
           </div>

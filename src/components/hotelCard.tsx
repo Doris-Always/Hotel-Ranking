@@ -1,16 +1,13 @@
-// HotelCard.tsx
 import React from 'react';
-import Card from '@/components/cardComponents/card';
+import Image from 'next/image';
 
 export interface Hotel {
-  id: number;
   name: string;
   country: string;
   address: string;
-  description: string;
-  rating: number;
-  imageSrc: string;
   category: string;
+  description: string;
+  image: string; // Add image field
 }
 
 interface HotelCardProps {
@@ -18,24 +15,40 @@ interface HotelCardProps {
   onDelete: (name: string) => void;
 }
 
-const HotelCard: React.FC<HotelCardProps> = ({ hotel, onDelete }) => (
-  <Card key={hotel.name} width="" height="h-64" >
-    <h3 className="text-lg font-bold">{hotel.name}</h3>
-    <p className="text-gray-700">{hotel.country}, {hotel.address}</p>
-    <p className="text-gray-500">{hotel.description}</p>
-    <p className="text-yellow-500">Rating: {hotel.rating} ⭐</p>
-    <div>
+const HotelCard: React.FC<HotelCardProps> = ({ hotel, onDelete }) => {
+  const handleDelete = () => {
+    onDelete(hotel.name);
+  };
+
+  return (
+    <div className="bg-white rounded-lg shadow-md p-4">
+      
+      <div className="relative h-48 w-full mb-4">
+        <Image
+          src={hotel.image}
+          alt={hotel.name}
+          fill
+          style={{ objectFit: 'cover' }}
+          className="rounded-lg"
+        />
+      </div>
+      <h2 className="font-bold text-xl mb-2">{hotel.name}</h2>
+      <p className="text-gray-700">{hotel.description}</p>
+      <p className="text-gray-500">Category: {hotel.category}</p>
+      <p className="text-gray-500">Address: {hotel.address}, {hotel.country}</p>
+      <div className='flex justify-between'>
       <button className="bg-blue-500 text-white py-2 px-4 mt-2 rounded hover:bg-blue-600">
         Rate Hotel
       </button>
       <button 
-        onClick={() => onDelete(hotel.name)}
-        className="bg-blue-500 text-white py-2 px-4 mt-2 rounded hover:bg-blue-600"
+        onClick={handleDelete}
+        className="bg-red-500 text-white py-2 px-4 mt-2 rounded hover:bg-blue-600"
       >
         Delete Hotel
       </button>
     </div>
-  </Card>
-);
+    </div>
+  );
+};
 
 export default HotelCard;

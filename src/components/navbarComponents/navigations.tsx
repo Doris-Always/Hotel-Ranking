@@ -5,11 +5,6 @@ const Navigations: React.FC = () => {
     <div>
     <ul className="flex flex-col md:flex-row gap-4 md:gap-8">
       <li>
-        <Link href="/" className="text-white hover:text-blue-600 cursor-pointer">
-          Home
-        </Link>
-      </li>
-      <li>
         <Link href="/createHotel" className="text-white hover:text-blue-600 cursor-pointer">
           Add Hotel
         </Link>
