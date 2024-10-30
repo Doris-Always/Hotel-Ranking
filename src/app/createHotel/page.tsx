@@ -10,11 +10,11 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 const imagesArray = [
-  '/executive-room2.jpg', // Add the path to your hotel images
+  '/executive-room2.jpg', 
   '/single-executive.jpg',
   '/executive-room2.jpg',
   '/single-executive.jpg',
-  // ... more images
+
 ];
 
 const CreateHotel = () => {
@@ -23,6 +23,20 @@ const CreateHotel = () => {
   const [categories, setCategories] = useState<string[]>(['1 Star', '2 Star', '3 Star']);
   const [error, setError] = useState('');
   const [showModal, setShowModal] = useState(false);
+  type Country = {
+    name: {
+      common: string;
+    };
+  };
+  
+  type Hotel = {
+    name: string;
+    country: string;
+    address: string;
+    category: string;
+    description: string;
+    image: string;
+  };
   const [formData, setFormData] = useState({
     name: "",
     country: "",
@@ -36,7 +50,7 @@ const CreateHotel = () => {
     const fetchCountries = async () => {
       try {
         const response = await axios.get("https://restcountries.com/v3.1/all");
-        const countryNames = response.data.map((country: any) => country.name.common);
+        const countryNames = response.data.map((country: Country) => country.name.common);
         setCountries(countryNames);
       } catch (error) {
         console.error("Error fetching countries:", error);
@@ -70,18 +84,16 @@ const CreateHotel = () => {
     }
 
     const retrievedArrayString = localStorage.getItem("hotels");
-    const hotelsFound = retrievedArrayString ? JSON.parse(retrievedArrayString) : [];
+    // const hotelsFound = retrievedArrayString ? JSON.parse(retrievedArrayString) : [];
+    const hotelsFound: Hotel[] = retrievedArrayString ? JSON.parse(retrievedArrayString) : [];
 
-    const hotelExists = hotelsFound.some(hotel => hotel.name.toLowerCase() === formData.name.toLowerCase());
+    const hotelExists = hotelsFound.some((hotel: Hotel) => hotel.name.toLowerCase() === formData.name.toLowerCase());
     if (hotelExists) {
       toast('Hotel name has been taken. Please pick a new name');
       return;
     }
-
-    // Select a random image from the images array
     const randomImage = imagesArray[Math.floor(Math.random() * imagesArray.length)];
     
-    // Add the random image to the formData
     const newHotel = { ...formData, image: randomImage };
     hotelsFound.unshift(newHotel);
     localStorage.setItem("hotels", JSON.stringify(hotelsFound));
