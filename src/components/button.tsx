@@ -1,4 +1,4 @@
-// components/Button.tsx
+
 import React from 'react';
 
 interface ButtonProps {
@@ -11,6 +11,7 @@ interface ButtonProps {
 }
 
 const Button: React.FC<ButtonProps> = ({
+
   text = "Click Me",
   onClick,
   width = "w-auto",
@@ -23,6 +24,7 @@ const Button: React.FC<ButtonProps> = ({
       onClick={onClick}
       className={`${width} ${height} ${color} ${textColor} py-2 px-4 rounded-md hover:opacity-90 transition duration-300`}
     >
+ 
       {text}
     </button>
   );
