@@ -84,7 +84,7 @@ const CreateHotel = () => {
     }
 
     const retrievedArrayString = localStorage.getItem("hotels");
-    // const hotelsFound = retrievedArrayString ? JSON.parse(retrievedArrayString) : [];
+   
     const hotelsFound: Hotel[] = retrievedArrayString ? JSON.parse(retrievedArrayString) : [];
 
     const hotelExists = hotelsFound.some((hotel: Hotel) => hotel.name.toLowerCase() === formData.name.toLowerCase());
@@ -125,7 +125,7 @@ const CreateHotel = () => {
             src="/single-executive.jpg"
             alt="Hotel"
             fill
-  style={{ objectFit: 'cover' }}
+           style={{ objectFit: 'cover' }}
             className="mb-2 rounded-t-lg object-cover"
           />
         </div>

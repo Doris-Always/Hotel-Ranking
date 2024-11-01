@@ -15,6 +15,7 @@ interface CardProps {
 const Card: React.FC<CardProps> = ({children,
     width = 'w-80', 
     height = 'h-48', 
+ 
     backgroundColor = 'bg-white', 
     className = '',
     imageSrc, 
@@ -22,7 +23,7 @@ const Card: React.FC<CardProps> = ({children,
  }) => {
   return (
     <div
-      className={`flex flex-col p-4 shadow-lg rounded-lg ${backgroundColor} ${width} ${height} ${className}`}
+      className={`flex flex-col mt-8 p-4 shadow-lg rounded-lg ${backgroundColor} ${width} ${height} ${className}`}
     >
       {imageSrc && (
         <Image

@@ -1,4 +1,4 @@
-// Hotels.tsx
+
 "use client";
 
 import React, { useEffect, useState } from 'react';
@@ -85,13 +85,10 @@ const Hotels = () => {
 
   const [activeHotel, setActiveHotel] = useState<string | null>(null);
 
-  // const handleDelete = (name: string) => {
-  //   console.log("Deleted:", name);
-  //   // Add your deletion logic here
-  // };
+ 
 
   const handleCardClick = (name: string) => {
-    setActiveHotel((prev) => (prev === name ? null : name)); // Set active hotel or toggle off
+    setActiveHotel((prev) => (prev === name ? null : name)); 
   };
   return (
     <>
