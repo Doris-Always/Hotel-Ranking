@@ -1,9 +1,9 @@
 "use client"
+import AddCategoryModal from '@/components/addCategoryModal'
 import Button from '@/components/button'
 import Card from '@/components/cardComponents/card'
 import Hero from '@/components/heroComponent/hero'
 import HeroContents from '@/components/heroComponent/heroContents'
-import Modal from '@/components/modal'
 import React, { useEffect, useState } from 'react'
 import { FaStar} from 'react-icons/fa';
 
@@ -70,7 +70,7 @@ const Categories = () => {
         {showModal && (
         <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
           <div className="bg-white p-6 rounded-lg shadow-lg w-96 h-96">
-            <Modal onAddCategory={handleAddCategory}/>
+            <AddCategoryModal onAddCategory={handleAddCategory}/>
             <button
               onClick={toggleModal}
               className="mt-4 bg-gray-300 text-gray-700 py-1 px-4 rounded hover:bg-gray-400 transition duration-300"

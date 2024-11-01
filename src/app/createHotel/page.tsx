@@ -4,10 +4,10 @@ import Card from "@/components/cardComponents/card";
 import React, { useState, useEffect } from "react";
 import Image from "next/image";
 import axios from 'axios';
-import Modal from "@/components/modal";
 import { useRouter } from "next/navigation";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import AddCategoryModal from "@/components/addCategoryModal";
 
 const imagesArray = [
   '/executive-room2.jpg', 
@@ -205,7 +205,7 @@ const CreateHotel = () => {
           {showModal && (
             <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
               <div className="bg-white p-6 rounded-lg shadow-lg w-96 h-96">
-                <Modal onAddCategory={handleAddCategory} />
+                <AddCategoryModal onAddCategory={handleAddCategory} />
                 <button
                   onClick={toggleModal}
                   className="mt-4 bg-gray-300 text-gray-700 py-1 px-4 rounded hover:bg-gray-400 transition duration-300"
