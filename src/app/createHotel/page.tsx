@@ -30,6 +30,7 @@ const CreateHotel = () => {
   };
   
   type Hotel = {
+    id: number;
     name: string;
     country: string;
     address: string;
@@ -71,6 +72,13 @@ const CreateHotel = () => {
     setError('');
   };
 
+  const getNextHotelId = () => {
+    const retrievedArrayString = localStorage.getItem("hotels");
+    const hotelsFound: Hotel[] = retrievedArrayString ? JSON.parse(retrievedArrayString) : [];
+
+    const maxId = hotelsFound.length > 0 ? Math.max(...hotelsFound.map(hotel => hotel.id)) : 0;
+    return maxId + 1;
+  };
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
@@ -92,13 +100,24 @@ const CreateHotel = () => {
       toast('Hotel name has been taken. Please pick a new name');
       return;
     }
-    const randomImage = imagesArray[Math.floor(Math.random() * imagesArray.length)];
-    
-    const newHotel = { ...formData, image: randomImage };
+
+    const newHotel: Hotel = {
+      id: getNextHotelId(),
+      ...formData,
+      image: imagesArray[Math.floor(Math.random() * imagesArray.length)], 
+    };
     hotelsFound.unshift(newHotel);
     localStorage.setItem("hotels", JSON.stringify(hotelsFound));
+    
     console.log("Form submitted:", newHotel);
     router.push('/hotels');
+    // const randomImage = imagesArray[Math.floor(Math.random() * imagesArray.length)];
+    
+    // const newHotel = { ...formData, image: randomImage };
+    // hotelsFound.unshift(newHotel);
+    // localStorage.setItem("hotels", JSON.stringify(hotelsFound));
+    // console.log("Form submitted:", newHotel);
+    // router.push('/hotels');
   };
 
   const toggleModal = () => setShowModal(prev => !prev);

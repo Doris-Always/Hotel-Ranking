@@ -6,9 +6,10 @@ import Button from "@/components/button";
 import Search from "@/components/search";
 import Filter from "@/components/filter";
 import HotelCard from "@/components/hotelCard";
+import Modal from "@/components/modal";
+import EditHotelForm from "@/components/editHotelForm";
 // import EditHotelForm from "@/components/editHotelForm";
 // import Modal from "@/components/modal";
-
 
 export interface Hotel {
   id: number;
@@ -30,6 +31,9 @@ const Hotels = () => {
     "2 Star",
     "3 Star",
   ]);
+
+  const [selectedHotel, setSelectedHotel] = useState<Hotel | null>(null);
+  const [showEditModal, setShowEditModal] = useState(false);
   const [isFilter, setFilter] = useState<boolean>(false);
   const [query, setQuery] = useState<string>("");
   const [selectedCategory, setSelectedCategory] = useState<
@@ -95,6 +99,40 @@ const Hotels = () => {
   const handleCardClick = (name: string) => {
     setActiveHotel((prev) => (prev === name ? null : name));
   };
+
+  const handleEditHotel = (hotel: Hotel) => {
+    console.log("Edit Hotel clicked:", hotel);
+
+    setSelectedHotel(hotel);
+    setShowEditModal(true);
+  };
+
+  const handleUpdateHotel = (updatedHotel: Partial<Hotel>) => {
+    if (selectedHotel) {
+      const updatedHotels = hotels.map(
+        (hotel) =>
+          hotel.id === selectedHotel.id ? { ...hotel, ...updatedHotel } : hotel 
+      );
+      localStorage.setItem("hotels", JSON.stringify(updatedHotels));
+      setHotels(updatedHotels);
+      setShowEditModal(false);
+      setSelectedHotel(null);
+    }
+  };
+
+  //   const handleEditHotel = (hotel: Hotel) => {
+  //     setSelectedHotel(hotel);
+  //     setShowEditModal(true);
+  // };
+  // const handleUpdateHotel = (updatedHotel: Partial<Hotel>) => {
+  //   const updatedHotels = hotels.map(hotel =>
+  //       hotel.name === updatedHotel.name ? updatedHotel : hotel
+  //   );
+  //   localStorage.setItem('hotels', JSON.stringify(updatedHotels));
+  //   setHotels(updatedHotels);
+  //   setShowEditModal(false);
+  //   setSelectedHotel(null);
+  // };
   return (
     <>
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mt-24 md:ml-16 ml-4">
@@ -125,6 +163,7 @@ const Hotels = () => {
                 onDelete={deleteHotel}
                 isActive={activeHotel === hotel.name}
                 onCardClick={handleCardClick}
+                handleEditHotel={handleEditHotel}
               />
             ) : null;
           }
@@ -135,18 +174,24 @@ const Hotels = () => {
               onDelete={deleteHotel}
               isActive={activeHotel === hotel.name}
               onCardClick={handleCardClick}
+              handleEditHotel={handleEditHotel}
             />
           );
         })}
       </div>
-      {/* <Modal>
-        <Input/>
-      </Modal> */}
-      {/* <EditHotelForm
-          hotel={selectedHotel}
-          onUpdateHotel={handleUpdateHotel}
-          onClose={() => setShowEditModal(false)}
-        /> */}
+      {showEditModal && selectedHotel && (
+        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
+          <div className="bg-white p-6 rounded-lg shadow-lg w-96 h-96">
+            <Modal>
+              <EditHotelForm
+                hotel={selectedHotel}
+                onUpdateHotel={handleUpdateHotel}
+                onClose={() => setShowEditModal(false)}
+              />
+            </Modal>
+          </div>
+        </div>
+      )}
     </>
   );
 };

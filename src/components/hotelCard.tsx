@@ -3,13 +3,15 @@ import Image from 'next/image';
 import StarRating from './starRating';
 
 export interface Hotel {
+  id: number;
   name: string;
   country: string;
   address: string;
-  category: string;
   description: string;
+  rating: number;
+  // imageSrc: string;
   image: string;
-   rating?:number;
+  category: string;
 }
 
 interface HotelCardProps {
@@ -17,10 +19,11 @@ interface HotelCardProps {
   onDelete: (name: string) => void;
   isActive: boolean; 
   onCardClick: (name: string) => void;
+  handleEditHotel: (hotel: Hotel) => void;
   rating?: number; 
 }
 
-const HotelCard: React.FC<HotelCardProps> = ({ hotel, onDelete,isActive, onCardClick}) => {
+const HotelCard: React.FC<HotelCardProps> = ({ hotel, onDelete,isActive, onCardClick,handleEditHotel}) => {
   const [rating, setRating] = useState(hotel.rating || 0);
   const handleDelete = () => {
     onDelete(hotel.name);
@@ -72,7 +75,7 @@ const HotelCard: React.FC<HotelCardProps> = ({ hotel, onDelete,isActive, onCardC
           </button>
         )}
           <button 
-            onClick={handleDelete}
+            onClick={() => handleEditHotel(hotel)}
             className="bg-blue-500 text-white py-2 px-4 mt-2 rounded hover:bg-blue-600"
           >
             Edit
